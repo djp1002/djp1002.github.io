@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Site is under Construction. It will Update Soon. Create a similar Portfolio site using the given details below."
+title: "Site is under Construction. It will Update Soon."
 author_profile: true
 redirect_from: 
   - /about/
