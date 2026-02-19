@@ -34,7 +34,7 @@ export const DATA = {
     { name: "Optimal Control", icon: Docker },
     { name: "Reinforcement Learning", icon: Docker },
     { name: "Motion Planning", icon: Docker },
-    { name: "Python", icon: Kubernetes },
+    { name: "Python", icon: Python },
     { name: "C", icon: Java },
     { name: "C++", icon: Csharp },
   ],
@@ -275,7 +275,7 @@ export const DATA = {
     //     "https://pub-83c5db439b40468498f97946200806f7.r2.dev/automatic-chat.mp4",
     // },
   ],
-  // hackathons: [
+  hackathons: [
   //   {
   //     title: "Hack Western 5",
   //     dates: "November 23rd - 25th, 2018",
@@ -659,5 +659,5 @@ export const DATA = {
   //       },
   //     ],
   //   },
-  // ],
+  ],
 } as const;
