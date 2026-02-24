@@ -92,7 +92,7 @@ export const DATA = {
       badges: [],
       location: "Mandi, Himachal Pradesh",
       title: "Teaching Assistant",
-      logoUrl: "/atomic.png",
+      logoUrl: "/iitmandi.png",
       start: "Mar 2023",
       end: "Feb 2026",
       description:
@@ -104,7 +104,7 @@ export const DATA = {
       badges: [],
       location: "Mandi, Himachal Pradesh",
       title: "Bootcamp/FDP Tutor",
-      logoUrl: "/shopify.svg",
+      logoUrl: "/iitmandi.png",
       start: "July 2024",
       end: "Aug 2024",
       description:
@@ -116,7 +116,7 @@ export const DATA = {
       badges: [],
       location: "Bhilai, Chhattisgarh",
       title: "Robotics Research Intern ",
-      logoUrl: "/nvidia.png",
+      logoUrl: "/iitbhilai.png",
       start: "July 2022",
       end: "Feb 2023",
       description:
@@ -128,7 +128,7 @@ export const DATA = {
       badges: [],
       location: "Gandhidham, Gujarat",
       title: "Automation Intern",
-      logoUrl: "/splunk.svg",
+      logoUrl: "/osvipl.jpg",
       start: "Apr 2021",
       end: "Sep 2021",
       description:
@@ -140,7 +140,7 @@ export const DATA = {
       school: "Indian Institute of Technology Mandi",
       href: "https://www.iitmandi.ac.in/",
       degree: "Master of Technology (Research) - Robotics and AI",
-      logoUrl: "/buildspace.jpg",
+      logoUrl: "/iitmandi.png",
       start: "Mar 2023",
       end: "Feb 2026",
     },
@@ -148,7 +148,7 @@ export const DATA = {
       school: "Marwadi University",
       href: "https://www.marwadiuniversity.ac.in/",
       degree: "Bachelor of Technology - Mechanical Engineering",
-      logoUrl: "/waterloo.png",
+      logoUrl: "/mu.png",
       start: "July 2017",
       end: "June 2021",
     },
@@ -275,23 +275,23 @@ export const DATA = {
     //     "https://pub-83c5db439b40468498f97946200806f7.r2.dev/automatic-chat.mp4",
     // },
   ],
-  hackathons: [
-    {
-      title: "Hack Western 5",
-      dates: "November 23rd - 25th, 2018",
-      location: "London, Ontario",
-      description:
-        "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
-      image:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/hackline/hack-western.png",
-      mlh: "https://s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg",
-      links: [{
-          type: "Website",
-          href: "https://ieeexplore.ieee.org/abstract/document/10949562",
-          icon: <Icons.globe className="size-3" />,
-        },
-      ],
-    },
+  // hackathons: [
+  //   {
+  //     title: "Hack Western 5",
+  //     dates: "November 23rd - 25th, 2018",
+  //     location: "London, Ontario",
+  //     description:
+  //       "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
+  //     image:
+  //       "https://pub-83c5db439b40468498f97946200806f7.r2.dev/hackline/hack-western.png",
+  //     mlh: "https://s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg",
+  //     links: [{
+  //         type: "Website",
+  //         href: "https://ieeexplore.ieee.org/abstract/document/10949562",
+  //         icon: <Icons.globe className="size-3" />,
+  //       },
+  //     ],
+  //   },
   //   {
   //     title: "Hack The North",
   //     dates: "September 14th - 16th, 2018",
@@ -664,5 +664,5 @@ export const DATA = {
   //       },
   //     ],
   //   },
-  ],
+  // ],
 } as const;
