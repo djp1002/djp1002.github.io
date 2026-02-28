@@ -1,16 +1,14 @@
 import { Icons } from "@/components/icons";
 import { HomeIcon, NotebookIcon } from "lucide-react";
-import { ReactLight } from "@/components/ui/svgs/reactLight";
-import { NextjsIconDark } from "@/components/ui/svgs/nextjsIconDark";
-import { Typescript } from "@/components/ui/svgs/typescript";
-import { Nodejs } from "@/components/ui/svgs/nodejs";
 import { Python } from "@/components/ui/svgs/python";
-import { Golang } from "@/components/ui/svgs/golang";
-import { Postgresql } from "@/components/ui/svgs/postgresql";
-import { Docker } from "@/components/ui/svgs/docker";
-import { Kubernetes } from "@/components/ui/svgs/kubernetes";
-import { Java } from "@/components/ui/svgs/java";
-import { Csharp } from "@/components/ui/svgs/csharp";
+import { Gazebo } from "@/components/ui/svgs/gazebo";
+import { ST } from "@/components/ui/svgs/st";
+import { Nvidia } from "@/components/ui/svgs/nvidia";
+import { ClassicalControl } from "@/components/ui/svgs/classicalcontrol";
+import { OptimalControl } from "@/components/ui/svgs/optimalcontrol";
+import { RL } from "@/components/ui/svgs/rl";
+import { C } from "@/components/ui/svgs/c";
+import { Cpp } from "@/components/ui/svgs/cpp";
 
 export const DATA = {
   name: "Darshankumar Prajapati",
@@ -19,30 +17,30 @@ export const DATA = {
   location: "Mandi, HP, India",
   locationLink: "https://maps.app.goo.gl/1BMv9XLTZUb8Z2PH9",
   description:
-    "I build things that move. Robots, ideas, systems, living or not. Legged Robotics, Dynamics & Control, Reinforcement Learning",
+    "I build things that move. Robots, ideas, systems, living or not. Legged Robotics, Dynamics, Perception & Control, Reinforcement Learning",
   summary:
-    "M.Tech Research student at IIT Mandi's Centre for AI and Robotics. My thesis focuses on autonomous multi-terrain navigation for heterogeneous UAV-quadruped coordination in industrial environments. Also working on RL-based dual-arm manipulation, biped locomotion, and MPC-based quadruped control.",
+    "M.Tech (Research) Scholar at IIT Mandi’s Centre for AI and Robotics, specializing in legged systems, optimal control, and sim-to-real reinforcement learning. My thesis focuses on autonomous multi-terrain navigation for heterogeneous UAV–quadruped coordination in industrial environments. I work on dynamic modeling, MPC-based quadruped control, RL-driven dual-arm manipulation, and dynamic biped locomotion, integrating perception, planning, and control into cohesive multi-robot frameworks. Building robots that respect dynamics before they learn to bend them.",
   avatarUrl: "/me.jpeg",
   skills: [
-    { name: "ROS", icon: ReactLight },
-    { name: "ROS 2", icon: NextjsIconDark },
-    { name: "Gazebo", icon: Typescript },
-    { name: "Isaac Sim", icon: Nodejs },
-    { name: "Embedded Systems", icon: Python },
-    { name: "Edge Systems", icon: Golang },
-    { name: "Classical Control", icon: Postgresql },
-    { name: "Optimal Control", icon: Docker },
-    { name: "Reinforcement Learning", icon: Docker },
-    { name: "Motion Planning", icon: Docker },
+    { name: "ROS", icon: Icons.ROS },
+    { name: "ROS 2", icon: () => <img src="/ros2.png" alt="ROS 2" className="size-6 brightness-0 dark:brightness-0 dark:invert"/> },
+    { name: "Gazebo", icon: Gazebo },
+    { name: "Isaac Sim", icon: () => <img src="/isaacsim.png" alt="Isaac Sim" className="size-6"/> },
+    { name: "Embedded Systems", icon: ST },
+    { name: "Edge Systems", icon: Nvidia },
+    { name: "Classical Control", icon: ClassicalControl },
+    { name: "Optimal Control", icon: OptimalControl },
+    { name: "Reinforcement Learning", icon: RL },
     { name: "Python", icon: Python },
-    { name: "C", icon: Java },
-    { name: "C++", icon: Csharp },
+    { name: "C", icon: C },
+    { name: "C++", icon: Cpp },
+    
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/blog", icon: NotebookIcon, label: "Experience" },
-    { href: "/blog", icon: NotebookIcon, label: "Education" },
-    { href: "/blog", icon: NotebookIcon, label: "Projects" },
+    // { href: "/blog", icon: NotebookIcon, label: "Education" },
+    // { href: "/blog", icon: NotebookIcon, label: "Projects" },
   ],
   contact: {
     email: "djprajapati.1002@gmail.com",
@@ -50,7 +48,7 @@ export const DATA = {
     social: {
       GitHub: {
         name: "GitHub",
-        url: "https://djp1002.github.io/",
+        url: "https://github.com/djp1002",
         icon: Icons.github,
         navbar: true,
       },
@@ -96,20 +94,20 @@ export const DATA = {
       start: "Mar 2023",
       end: "Feb 2026",
       description:
-        "Supervised undergraduate research projects in robotics and mechanical systems. Conducted laboratory sessions for Design Practicum, and Robot Kinematics & Dynamics",
+        "Supervised undergraduate research projects in robotics and mechanical systems. Conducted laboratory sessions for Design Practicum, and Robot Kinematics & Dynamics. Conducted technical and hands-on sessions on robotics and drone systems for 100+ students. Conducted 3-day robotics workshop for 40+ faculty across institutions under the Faculty Development Program",
     },
-    {
-      company: "IIT Mandi",
-      href: "https://www.iitmandi.ac.in/",
-      badges: [],
-      location: "Mandi, Himachal Pradesh",
-      title: "Bootcamp/FDP Tutor",
-      logoUrl: "/iitmandi.png",
-      start: "July 2024",
-      end: "Aug 2024",
-      description:
-        "Conducted technical and hands-on sessions on robotics and drone systems for 100+ students. Conducted 3-day robotics workshop for 40+ faculty across institutions under the Faculty Development Program",
-    },
+    // {
+    //   company: "IIT Mandi",
+    //   href: "https://www.iitmandi.ac.in/",
+    //   badges: [],
+    //   location: "Mandi, Himachal Pradesh",
+    //   title: "Bootcamp/FDP Tutor",
+    //   logoUrl: "/iitmandi.png",
+    //   start: "July 2024",
+    //   end: "Aug 2024",
+    //   description:
+    //     "Conducted technical and hands-on sessions on robotics and drone systems for 100+ students. Conducted 3-day robotics workshop for 40+ faculty across institutions under the Faculty Development Program",
+    // },
     {
       company: "IIT Bhilai",
       href: "https://www.iitbhilai.ac.in/",
