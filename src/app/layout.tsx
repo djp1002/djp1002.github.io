@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import NavRail from "@/components/nav-rail";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
@@ -7,6 +8,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import Sidebar from "@/components/sidebar";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -83,10 +85,14 @@ export default function RootLayout({
                 }}
               />
             </div>
-            <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+            <NavRail />
+            <div className="relative z-10 max-w-5xl ml-100 mr-[25%] py-12 pb-24 sm:py-24 px-6 ">
               {children}
             </div>
-            <Navbar />
+            <Sidebar />
+            <div className="md:hidden">
+              <Navbar />
+            </div>
           </TooltipProvider>
         </ThemeProvider>
       </body>
