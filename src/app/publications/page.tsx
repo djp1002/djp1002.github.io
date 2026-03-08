@@ -7,10 +7,19 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { Suspense } from "react";
 
 const BLUR_FADE_DELAY = 0.04;
-
 export default function PublicationsPage() {
+  return (
+    <Suspense fallback={null}>
+      <PublicationsContent />
+    </Suspense>
+  );
+}
+
+// export default function PublicationsPage() {
+function PublicationsContent() {
   const authorMap = Object.fromEntries(DATA.authors.map((a) => [a.id, a]));
   const searchParams = useSearchParams();                              // ← ADD
   const highlightIds = searchParams.get("highlight")?.split(",") ?? []; // ← ADD
