@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
 
 const BLUR_FADE_DELAY = 0.04;
 export default function PublicationsPage() {
@@ -21,8 +22,18 @@ export default function PublicationsPage() {
 // export default function PublicationsPage() {
 function PublicationsContent() {
   const authorMap = Object.fromEntries(DATA.authors.map((a) => [a.id, a]));
+  const router = useRouter();
   const searchParams = useSearchParams();                              // ← ADD
   const highlightIds = searchParams.get("highlight")?.split(",") ?? []; // ← ADD
+
+  useEffect(() => {
+    if (highlightIds.length > 0) {
+      const timer = setTimeout(() => {
+        router.replace("/publications", { scroll: false });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
   return (
     <main className="min-h-dvh flex flex-col gap-10">
       <BlurFade delay={BLUR_FADE_DELAY}>
@@ -36,7 +47,7 @@ function PublicationsContent() {
             : null;
 
           return (
-            <BlurFade key={pub.id} delay={BLUR_FADE_DELAY * (index + 2)}>
+            <BlurFade key={`${pub.id}-${highlightIds.includes(pub.id)}`} delay={BLUR_FADE_DELAY * (index + 2)}>
               <PublicationCard
                 pub={pub}
                 authorMap={authorMap}
@@ -57,14 +68,29 @@ function PublicationCard({ pub, authorMap, linkedProject, isHighlighted }: {
   linkedProject: typeof DATA.projects[number] | null | undefined;
   isHighlighted: boolean;   // ← ADD
 }) {
+
   const [expanded, setExpanded] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);  // ← ADD
+  const [highlighted, setHighlighted] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
+  const [glowPos2, setGlowPos2] = useState({ x: 0, y: 0 });
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setGlowPos2({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
-  // ← ADD this effect
+  const prevHighlighted = useRef(false);
   useEffect(() => {
-    if (isHighlighted && cardRef.current) {
+    if (isHighlighted && !prevHighlighted.current && cardRef.current) {
+      prevHighlighted.current = true;
       cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      const fadeIn = setTimeout(() => setHighlighted(true), 600);
+      const fadeOut = setTimeout(() => {
+        setHighlighted(false);
+        prevHighlighted.current = false;
+      }, 2600);
+      return () => { clearTimeout(fadeIn); clearTimeout(fadeOut); };
     }
   }, [isHighlighted]);
 
@@ -74,17 +100,35 @@ function PublicationCard({ pub, authorMap, linkedProject, isHighlighted }: {
         {/* Image — unchanged inside, just wrapper updated */}
         {pub.image && (
             <button
-            className="w-1/3 flex-none aspect-video bg-white rounded-xl overflow-hidden flex items-center justify-center cursor-pointer border border-border"
+            className="group w-1/3 flex-none aspect-video bg-white rounded-xl overflow-hidden flex items-center justify-center cursor-pointer border border-border relative duration-300 transition-all hover:scale-[1.02]"
             onClick={() => { if (pub.video) setVideoOpen(true); }}>
             <img src={pub.image} alt={pub.title} className="w-full h-full object-contain" />
+            {pub.video && (
+              <div className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <div className="bg-black/50 rounded-full p-3 backdrop-blur-sm">
+                  <svg className="w-6 h-6 text-white fill-white" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            )}
             </button>
         )}
 
         <div
-        ref={cardRef}
-        className={`flex-1 border rounded-2xl p-5 bg-background/80 backdrop-blur hover:shadow-md transition-all duration-700 flex flex-col gap-3 ${
-          isHighlighted ? "ring-2 ring-cyan-500" : ""
-        }`}>
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={() => setHovered2(true)}
+          onMouseLeave={() => setHovered2(false)}
+          className={`relative flex-1 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${highlighted ? "ring-2 ring-cyan-500" : ""}`}
+          style={{
+            background: hovered2
+              ? `radial-gradient(circle at ${glowPos2.x}px ${glowPos2.y}px, rgb(0, 217, 255) 0%, rgba(100,100,100,0.2) 60%, transparent 100%)`
+              : "rgba(100,100,100,0.2)",
+            padding: "1px",
+          }}
+        >
+          <div className="relative rounded-2xl p-5 bg-background flex flex-col gap-3 h-full">
             
             {/* Right — Content */}
 
@@ -171,6 +215,7 @@ function PublicationCard({ pub, authorMap, linkedProject, isHighlighted }: {
                     <ArrowUpRight className="size-3" /> View Project
                 </Link>
                 )}
+            </div>
             </div>
             
         </div>

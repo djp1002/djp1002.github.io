@@ -4,86 +4,123 @@ import { DATA } from "@/data/resume";
 import BlurFade from "@/components/magicui/blur-fade";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { createPortal } from "react-dom";
 
 const BLUR_FADE_DELAY = 0.04;
 
-function getYoutubeEmbedUrl(url: string) {
+function getYoutubeId(url: string) {
   const match = url.match(/(?:youtu\.be\/|v=)([^&]+)/);
-  return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1&loop=1&playlist=${match[1]}&controls=0` : null;
+  return match ? match[1] : "";
 }
 
-function ProjectCard({ project, index }: { project: typeof DATA.projects[number]; index: number }) {
+function ProjectCard({ project }: { project: typeof DATA.projects[number] }) {
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const embedUrl = getYoutubeEmbedUrl(project.video ?? "");
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setGlowPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
   const linkedPublications = (project.publicationIds ?? [])
     .map((pid) => DATA.publications.find((p) => p.id === pid))
     .filter(Boolean);
 
+  const youtubeId = getYoutubeId(project.video ?? "");
+
   return (
+    // <div className="border rounded-2xl overflow-hidden bg-background/80 backdrop-blur hover:shadow-md transition-shadow flex flex-col h-full">
     <div
-      className={`relative rounded-2xl overflow-hidden border bg-background/80 backdrop-blur cursor-pointer transition-all duration-300 ${
-        hovered ? "scale-[1.02] shadow-xl z-10" : "scale-100 shadow-md"
-      }`}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-    >
-      {/* Background image / video */}
-      <div className="relative w-full aspect-video overflow-hidden">
-        {/* Static image always present */}
-        <img
-          src={project.image}
-          alt={project.title}
-          className={`w-full h-full object-cover transition-opacity duration-500 ${hovered && embedUrl ? "opacity-0" : "opacity-100"}`}
-        />
+      className="relative rounded-2xl overflow-hidden transition-all duration-300 flex flex-col h-fit hover:scale-[1.02]"
+      style={{
+        background: hovered
+          ? `radial-gradient(circle at ${glowPos.x}px ${glowPos.y}px, rgb(0, 217, 255) 0%, rgba(100,100,100,0.2) 60%, transparent 100%)`
+          : "rgba(100,100,100,0.2)",
+        padding: "1px",
+      }}>
+      <div className="rounded-2xl overflow-hidden bg-background flex flex-col h-full">
+      {/* Image with play button — fixed aspect */}
+      <button
+        className="group relative w-full h-52 bg-muted flex items-center justify-center overflow-hidden flex-none"
+        onClick={() => { if (project.video) setVideoOpen(true); }}
+      >
+        <img src={project.image} alt={project.title} className="w-full h-full object-contain" />
+        {project.video && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-black/50 rounded-full p-3 backdrop-blur-sm transition-transform duration-300 group-hover:scale-130">
+              <svg className="w-6 h-6 text-white fill-white" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        )}
+      </button>
 
-        {/* YouTube iframe on hover */}
-        {hovered && embedUrl && (
-          <iframe
-            ref={iframeRef}
-            src={embedUrl}
-            className="absolute inset-0 w-full h-full"
-            allow="autoplay; encrypted-media"
-            allowFullScreen={false}
-          />
+      {/* Content */}
+      <div className="flex flex-col gap-2 p-4">
+        <div className="text-xs text-muted-foreground font-mono">{project.dates}</div>
+        <h3 className="font-semibold text-sm leading-snug">{project.title}</h3>
+
+        {/* Technologies */}
+        <div className="flex flex-wrap gap-1.5">
+          {project.technologies.map((tech) => (
+            <span key={tech} className="text-xs bg-muted rounded-md px-2 py-0.5 text-muted-foreground">
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Description toggle */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors w-fit"
+        >
+          {expanded ? "▲ Hide Description" : "▼ Show Description"}
+        </button>
+
+        {expanded && (
+          <p className="text-sm text-muted-foreground leading-relaxed border-l-2 pl-3">
+            {project.description}
+          </p>
         )}
 
-        {/* Gradient overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-60"}`} />
-
-        {/* Content overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-2">
-          <div className="text-xs text-white/60 font-mono">{project.dates}</div>
-          <h3 className="font-semibold text-white text-sm leading-snug">{project.title}</h3>
-
-          {/* Technologies */}
-          <div className={`flex flex-wrap gap-1.5 transition-all duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
-            {project.technologies.map((tech) => (
-              <span key={tech} className="text-xs bg-white/20 text-white rounded-md px-2 py-0.5 backdrop-blur">
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          {/* Links row */}
-          <div className={`flex flex-wrap items-center gap-3 transition-all duration-300 ${hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
-            {/* Publication links */}
-            {linkedPublications.map((pub,i) => pub && (
-              <Link
-                key={pub.id}
-                href={`/publications?highlight=${pub.id}`}
-                className="flex items-center gap-1 text-xs text-cyan-400 hover:underline decoration-cyan-400 underline-offset-4"
-                onClick={(e) => e.stopPropagation()}
-              >
+        {/* Publication links */}
+        {linkedPublications.length > 0 && (
+          <div className="flex flex-wrap gap-3 pt-1">
+            {linkedPublications.map((pub, i) => pub && (
+              <Link key={pub.id} href={`/publications?highlight=${pub.id}`}
+                className="flex items-center gap-1 text-xs text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4">
                 <ArrowUpRight className="size-3" />
-                {/* {pub.title.length > 40 ? pub.title.slice(0, 40) + "…" : pub.title} */}
                 Pub {i + 1}
               </Link>
             ))}
           </div>
-        </div>
+        )}
       </div>
+      </div>
+
+      {/* Video modal */}
+      {videoOpen && createPortal(
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+          onClick={() => setVideoOpen(false)}>
+          <div className="w-[80vw] max-w-4xl aspect-video" onClick={(e) => e.stopPropagation()}>
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+              className="w-full h-full rounded-xl"
+              allowFullScreen allow="autoplay"
+            />
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
@@ -95,10 +132,10 @@ export default function ProjectsPage() {
         <h2 className="text-xl font-bold">Projects</h2>
       </BlurFade>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
         {DATA.projects.map((project, index) => (
           <BlurFade key={project.title} delay={BLUR_FADE_DELAY * (index + 2)}>
-            <ProjectCard project={project} index={index} />
+            <ProjectCard project={project} />
           </BlurFade>
         ))}
       </div>

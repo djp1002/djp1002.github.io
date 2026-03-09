@@ -28,7 +28,7 @@ export default function Sidebar() {
             ))}
         </div>
         {/* CV Download */}
-        <a href="/cv.pdf" download
+        <a href="/djp_cv.pdf" download
           className="text-xs border rounded-lg px-30 py-2 hover:bg-muted transition-colors">
           Download CV
         </a>
