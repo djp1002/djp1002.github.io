@@ -240,6 +240,6 @@ function PublicationCard({ pub, authorMap, linkedProject, isHighlighted }: {
 }
 
 function getYoutubeId(url: string) {
-  const match = url.match(/(?:youtu\.be\/|v=)([^&]+)/);
+  const match = url.match(/(?:youtu\.be\/|v=|shorts\/)([^&?/]+)/);
   return match ? match[1] : "";
 }

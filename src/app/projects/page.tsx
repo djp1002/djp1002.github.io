@@ -9,7 +9,7 @@ import { createPortal } from "react-dom";
 const BLUR_FADE_DELAY = 0.04;
 
 function getYoutubeId(url: string) {
-  const match = url.match(/(?:youtu\.be\/|v=)([^&]+)/);
+  const match = url.match(/(?:youtu\.be\/|v=|shorts\/)([^&?/]+)/);
   return match ? match[1] : "";
 }
 
